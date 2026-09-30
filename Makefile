@@ -23,7 +23,7 @@ LDFLAGS := -ffreestanding -O2 -nostdlib -T $(LINK_SCRIPT)
 all: $(TARGET)
 
 dev: $(TARGET)
-	$(QEMU) -kernel $(TARGET)
+	$(QEMU) -fda $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o $@ -lgcc
