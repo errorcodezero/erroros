@@ -16,6 +16,7 @@ OBJS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(C_SRCS)) \
 TARGET := $(BUILD_DIR)/mykernel.bin
 
 CFLAGS := -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+SFLAGS := -32
 LDFLAGS := -ffreestanding -O2 -nostdlib -T $(LINK_SCRIPT)
 
 .PHONY: all clean
@@ -23,7 +24,7 @@ LDFLAGS := -ffreestanding -O2 -nostdlib -T $(LINK_SCRIPT)
 all: $(TARGET)
 
 dev: $(TARGET)
-	$(QEMU) -fda $(TARGET)
+	$(QEMU) -hda $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o $@ -lgcc
@@ -35,7 +36,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.s | $(BUILD_DIR)
-	$(AS) $< -o $@
+	$(AS) $(SFLAGS) -c $< -o $@
 
 clean:
 	rm -rf $(BUILD_DIR)
