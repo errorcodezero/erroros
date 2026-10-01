@@ -3,16 +3,24 @@
 .text
 .global _start
 _start:
+	cli
 	ljmp $0x07C0, $start
 
 start:
+	/* set up segment registers to match CS */
 	mov %cs, %ax
 	mov %ax, %ds
 	mov %ax, %es
 	mov %ax, %fs
 	mov %ax, %gs
 
-	xor %si, %si
+	xor %ax, %ax
+	mov %ax, %ss
+	mov $0x7C00, %sp
+
+	sti
+
+xor %si, %si
 
 print:
 	mov $0x0E, %ah
